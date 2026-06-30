@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/GLADOSKABOSS/cache_eraser/actions/workflows/ci.yml/badge.svg)](https://github.com/GLADOSKABOSS/cache_eraser/actions/workflows/ci.yml)
 [![CD](https://github.com/GLADOSKABOSS/cache_eraser/actions/workflows/cd.yml/badge.svg)](https://github.com/GLADOSKABOSS/cache_eraser/actions/workflows/cd.yml)
+[![Pylint](https://img.shields.io/badge/pylint-10.00-brightgreen)](https://github.com/GLADOSKABOSS/cache_eraser/blob/main/.pylintrc)
 
 GUI-утилита для рекурсивного поиска и удаления кеш-файлов и артефактов сборки в указанной директории.
 
@@ -43,12 +44,12 @@ build_exe.bat
 
 При пуше в `main` выполняются:
 
-| Этап | Инструменты | Описание |
+| Этап | Инструменты | Статус |
 |---|---|---|
-| **lint** | ruff, mypy, pylint | Статический анализ кода |
-| **test** | pytest, pytest-cov | Модульные тесты (покрытие ≥ 70%) |
-| **build** | PyInstaller | Сборка Windows exe |
-| **release** | GitHub Releases | Публикация exe как релиза |
+| **lint** | ruff, mypy, pylint | pylint **10.00/10** |
+| **test** | pytest, pytest-cov | покрытие ≥ 70% |
+| **build** | PyInstaller | Windows exe |
+| **release** | GitHub Releases | публикация релиза |
 
 Сборка и релиз запускаются только при изменении исходного кода (`main.py`, `scanner.py`, `cache_patterns.py`, `CacheEraser.spec`, `icon.png`).
 
@@ -63,6 +64,7 @@ build_exe.bat
 | `build_exe.bat` | Скрипт сборки |
 | `icon.png` | Иконка приложения |
 | `CacheEraser.exe` | Готовый исполняемый файл |
+| `.pylintrc` | Конфигурация pylint (10.00/10) |
 | `tests/` | Модульные тесты |
 | `.github/workflows/` | CI/CD пайплайны |
 
