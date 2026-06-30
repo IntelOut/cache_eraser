@@ -42,16 +42,12 @@ build_exe.bat
 
 ## CI / CD
 
-При пуше в `main` выполняются:
+Единый workflow `ci.yml`:
 
-| Этап | Инструменты | Статус |
+| Этап | Условие | Инструменты |
 |---|---|---|
-| **lint** | ruff, mypy, pylint | pylint **10.00/10** |
-| **test** | pytest, pytest-cov | покрытие ≥ 70% |
-| **build** | PyInstaller | Windows exe |
-| **release** | GitHub Releases | публикация релиза |
-
-Сборка и релиз запускаются только при изменении исходного кода (`main.py`, `scanner.py`, `cache_patterns.py`, `CacheEraser.spec`, `icon.png`).
+| **ci** | всегда | ruff, mypy, pylint, pytest |
+| **release** | push в `main` | PyInstaller + GitHub Release |
 
 ## Структура проекта
 

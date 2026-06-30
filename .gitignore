@@ -182,3 +182,4 @@ cython_debug/
 .cursorindexingignore
 
 .vscode/
+.kilo/

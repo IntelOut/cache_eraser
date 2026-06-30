@@ -1,4 +1,4 @@
-name: CD
+name: Continuous Delivery
 
 on:
   push:
@@ -13,49 +13,29 @@ on:
 permissions:
   contents: write
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   build:
     runs-on: windows-latest
-
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-      - name: Install PyInstaller
-        run: pip install pyinstaller
-      - name: Build executable
-        run: pyinstaller CacheEraser.spec
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: CacheEraser-${{ github.sha }}
-          path: dist/CacheEraser.exe
+      - run: pip install pyinstaller pillow
+      - run: pyinstaller CacheEraser.spec
 
   release:
     needs: build
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Generate tag
         id: tag
-        run: |
-          TAG="v$(date +'%Y%m%d%H%M')"
-          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: CacheEraser-${{ github.sha }}
-          path: .
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
+        shell: bash
+        run: echo "tag=v$(date +'%Y%m%d%H%M')" >> "$GITHUB_OUTPUT"
+      - uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ steps.tag.outputs.tag }}
           name: Cache Eraser ${{ steps.tag.outputs.tag }}
@@ -63,4 +43,4 @@ jobs:
             Автоматическая сборка от ${{ github.event.head_commit.message }}
 
             Коммит: ${{ github.sha }}
-          files: CacheEraser.exe
+          files: dist/CacheEraser.exe
