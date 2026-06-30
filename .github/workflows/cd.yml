@@ -1,14 +1,6 @@
 name: Continuous Delivery
 
-on:
-  push:
-    branches: [main]
-    paths:
-      - "main.py"
-      - "scanner.py"
-      - "cache_patterns.py"
-      - "CacheEraser.spec"
-      - "icon.png"
+on: workflow_dispatch
 
 permissions:
   contents: write
@@ -23,14 +15,19 @@ jobs:
           python-version: "3.12"
       - run: pip install pyinstaller pillow
       - run: pyinstaller CacheEraser.spec
+      - uses: actions/upload-artifact@v7
+        with:
+          name: CacheEraser-exe
+          path: dist/CacheEraser.exe
 
   release:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
         with:
-          fetch-depth: 0
+          name: CacheEraser-exe
+          path: dist/
       - name: Generate tag
         id: tag
         shell: bash
