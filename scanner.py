@@ -8,7 +8,6 @@ import fnmatch
 import os
 import shutil
 import stat
-import sys
 
 from cache_patterns import CACHE_PATTERNS, EXCLUDED_DIRS, CachePattern
 
@@ -135,15 +134,10 @@ def delete_items(items: list[str]) -> tuple[int, int]:
     for path in items:
         try:
             if os.path.isdir(path):
-
-                def _remove_readonly(func, p, _excinfo):
-                    os.chmod(p, stat.S_IWRITE)
-                    func(p)
-
-                if sys.version_info >= (3, 12):
-                    shutil.rmtree(path, onexc=_remove_readonly)  # pylint: disable=unexpected-keyword-arg
-                else:
-                    shutil.rmtree(path, onerror=_remove_readonly)  # pylint: disable=deprecated-argument
+                for dirpath, _, filenames in os.walk(path):
+                    for f in filenames:
+                        os.chmod(os.path.join(dirpath, f), stat.S_IWRITE)
+                shutil.rmtree(path)
             else:
                 os.remove(path)
             success += 1
