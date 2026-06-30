@@ -1,5 +1,7 @@
 """GUI application for Cache Eraser.
 
+Copyright IntelOut (c) 2026
+
 Tkinter-based interface for scanning directories, previewing
 cache artifacts, and deleting them with optional dry-run mode.
 """
