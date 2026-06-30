@@ -21,7 +21,7 @@ def _resource_path(relative: str) -> str:
     directory pointed to by ``sys._MEIPASS``.
     """
     try:
-        base = sys._MEIPASS
+        base = sys._MEIPASS  # type: ignore[attr-defined]
     except AttributeError:
         base = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(base, relative)
@@ -48,6 +48,14 @@ class CacheEraserApp:
 
         self.scan_results: ScanResult = []
         self._busy = False
+        self.path_var = tk.StringVar()
+        self.type_vars: dict[str, tk.BooleanVar] = {}
+        self.scan_btn: ttk.Button = ttk.Button()
+        self.dry_run_var = tk.BooleanVar()
+        self.delete_btn: ttk.Button = ttk.Button()
+        self.tree: ttk.Treeview = ttk.Treeview()
+        self.progress: ttk.Progressbar = ttk.Progressbar()
+        self.status_var = tk.StringVar()
 
         self._build_widgets()
         self._bind_events()
@@ -92,7 +100,7 @@ class CacheEraserApp:
         frame = ttk.LabelFrame(parent, text="Cache types to find", padding=5)
         frame.grid(row=1, column=0, sticky=tk.EW, pady=(0, 5))
 
-        self.type_vars: dict[str, tk.BooleanVar] = {}
+        self.type_vars.clear()
         cols = 4
         for i, p in enumerate(CACHE_PATTERNS):
             var = tk.BooleanVar(value=True)
@@ -151,8 +159,9 @@ class CacheEraserApp:
         self.progress.grid(row=4, column=0, sticky=tk.EW, pady=(0, 3))
 
         self.status_var = tk.StringVar(value="Ready")
-        bar = ttk.Label(parent, textvariable=self.status_var, relief=tk.SUNKEN, anchor=tk.W)
-        bar.grid(row=5, column=0, sticky=tk.EW)
+        status_label = ttk.Label(parent, textvariable=self.status_var,
+                                 relief=tk.SUNKEN, anchor=tk.W)
+        status_label.grid(row=5, column=0, sticky=tk.EW)
 
     # ------------------------------------------------------------------
     # Event bindings
@@ -236,7 +245,7 @@ class CacheEraserApp:
         try:
             results = scan_directory(root_path, selected)
             self.root.after(0, self._scan_complete, results)
-        except Exception as e:
+        except OSError as e:
             self.root.after(0, self._scan_error, str(e))
 
     def _scan_complete(self, results: ScanResult) -> None:
@@ -300,7 +309,7 @@ class CacheEraserApp:
         try:
             success, errors = delete_items(paths)
             self.root.after(0, self._delete_complete, success, errors)
-        except Exception as e:
+        except OSError as e:
             self.root.after(0, self._scan_error, str(e))
 
     def _delete_complete(self, success: int, errors: int) -> None:
@@ -317,7 +326,7 @@ class CacheEraserApp:
         messagebox.showinfo("Complete", "\n".join(parts))
 
 
-def main() -> None:
+def entry_point() -> None:
     """Application entry point."""
     root = tk.Tk()
     CacheEraserApp(root)
@@ -325,4 +334,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    entry_point()

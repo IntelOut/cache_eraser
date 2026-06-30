@@ -1,0 +1,63 @@
+name: CD
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "main.py"
+      - "scanner.py"
+      - "cache_patterns.py"
+      - "CacheEraser.spec"
+      - "icon.png"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install PyInstaller
+        run: pip install pyinstaller
+      - name: Build executable
+        run: pyinstaller CacheEraser.spec
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CacheEraser-${{ github.sha }}
+          path: dist/CacheEraser.exe
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Generate tag
+        id: tag
+        run: |
+          TAG="v$(date +'%Y%m%d%H%M')"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: CacheEraser-${{ github.sha }}
+          path: .
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.tag }}
+          name: Cache Eraser ${{ steps.tag.outputs.tag }}
+          body: |
+            Автоматическая сборка от ${{ github.event.head_commit.message }}
+
+            Коммит: ${{ github.sha }}
+          files: CacheEraser.exe

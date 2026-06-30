@@ -8,6 +8,7 @@ import fnmatch
 import os
 import shutil
 import stat
+import sys
 
 from cache_patterns import CACHE_PATTERNS, EXCLUDED_DIRS, CachePattern
 
@@ -48,12 +49,11 @@ def format_size(size_bytes: int) -> str:
     """
     if size_bytes < 1024:
         return f"{size_bytes} B"
-    elif size_bytes < 1024 ** 2:
+    if size_bytes < 1024 ** 2:
         return f"{size_bytes / 1024:.1f} KB"
-    elif size_bytes < 1024 ** 3:
+    if size_bytes < 1024 ** 3:
         return f"{size_bytes / 1024 ** 2:.1f} MB"
-    else:
-        return f"{size_bytes / 1024 ** 3:.1f} GB"
+    return f"{size_bytes / 1024 ** 3:.1f} GB"
 
 
 def _build_dir_map(patterns: list[CachePattern]) -> dict[str, str]:
@@ -93,14 +93,13 @@ def scan_directory(
     patterns = [p for p in CACHE_PATTERNS if p.id in selected_ids]
     dir_map = _build_dir_map(patterns)
     file_map = _build_file_map(patterns)
-    active_dir_names = set(dir_map.keys())
     results: ScanResult = []
 
     for dirpath, dirnames, filenames in os.walk(root_path):
         dirnames[:] = [d for d in dirnames if d not in EXCLUDED_DIRS]
 
         for d in dirnames[:]:
-            if d in active_dir_names:
+            if d in dir_map:
                 full = os.path.join(dirpath, d)
                 size = get_dir_size(full)
                 results.append((full, dir_map[d], size))
@@ -137,11 +136,14 @@ def delete_items(items: list[str]) -> tuple[int, int]:
         try:
             if os.path.isdir(path):
 
-                def _remove_readonly(func, p, excinfo):
+                def _remove_readonly(func, p, _excinfo):
                     os.chmod(p, stat.S_IWRITE)
                     func(p)
 
-                shutil.rmtree(path, onerror=_remove_readonly)
+                if sys.version_info >= (3, 12):
+                    shutil.rmtree(path, onexc=_remove_readonly)
+                else:
+                    shutil.rmtree(path, onerror=_remove_readonly)
             else:
                 os.remove(path)
             success += 1

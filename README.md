@@ -1,5 +1,8 @@
 # Cache Eraser
 
+[![CI](https://github.com/GLADOSKABOSS/cache_eraser/actions/workflows/ci.yml/badge.svg)](https://github.com/GLADOSKABOSS/cache_eraser/actions/workflows/ci.yml)
+[![CD](https://github.com/GLADOSKABOSS/cache_eraser/actions/workflows/cd.yml/badge.svg)](https://github.com/GLADOSKABOSS/cache_eraser/actions/workflows/cd.yml)
+
 GUI-утилита для рекурсивного поиска и удаления кеш-файлов и артефактов сборки в указанной директории.
 
 ## Возможности
@@ -13,12 +16,13 @@ GUI-утилита для рекурсивного поиска и удален�
 
 ## Использование
 
-1. Запустите `CacheEraser.exe`.
-2. Выберите корневую директорию для сканирования (кнопка **Browse**).
-3. Отметьте нужные типы кеша (все включены по умолчанию).
-4. Нажмите **Scan** — программа найдёт все совпадения и покажет их в таблице с размерами.
-5. Включите **Dry run**, если хотите только просмотреть результаты без удаления.
-6. Нажмите **Delete All** для безвозвратного удаления (потребуется подтверждение).
+1. Скачайте последний релиз со страницы [Releases](https://github.com/GLADOSKABOSS/cache_eraser/releases).
+2. Запустите `CacheEraser.exe`.
+3. Выберите корневую директорию для сканирования (кнопка **Browse**).
+4. Отметьте нужные типы кеша (все включены по умолчанию).
+5. Нажмите **Scan** — программа найдёт все совпадения и покажет их в таблице с размерами.
+6. Включите **Dry run**, если хотите только просмотреть результаты без удаления.
+7. Нажмите **Delete All** для безвозвратного удаления (потребуется подтверждение).
 
 ## Сборка из исходников
 
@@ -35,6 +39,19 @@ build_exe.bat
 
 Готовый exe появится в корне проекта.
 
+## CI / CD
+
+При пуше в `main` выполняются:
+
+| Этап | Инструменты | Описание |
+|---|---|---|
+| **lint** | ruff, mypy, pylint | Статический анализ кода |
+| **test** | pytest, pytest-cov | Модульные тесты (покрытие ≥ 70%) |
+| **build** | PyInstaller | Сборка Windows exe |
+| **release** | GitHub Releases | Публикация exe как релиза |
+
+Сборка и релиз запускаются только при изменении исходного кода (`main.py`, `scanner.py`, `cache_patterns.py`, `CacheEraser.spec`, `icon.png`).
+
 ## Структура проекта
 
 | Файл | Назначение |
@@ -46,6 +63,8 @@ build_exe.bat
 | `build_exe.bat` | Скрипт сборки |
 | `icon.png` | Иконка приложения |
 | `CacheEraser.exe` | Готовый исполняемый файл |
+| `tests/` | Модульные тесты |
+| `.github/workflows/` | CI/CD пайплайны |
 
 ## Исключённые директории
 
