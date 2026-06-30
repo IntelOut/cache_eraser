@@ -20,9 +20,8 @@ def _resource_path(relative: str) -> str:
     When bundled with PyInstaller the icon is extracted to a temporary
     directory pointed to by ``sys._MEIPASS``.
     """
-    try:
-        base = sys._MEIPASS  # type: ignore[attr-defined]
-    except AttributeError:
+    base: str | None = getattr(sys, '_MEIPASS', None)
+    if base is None:
         base = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(base, relative)
 

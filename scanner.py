@@ -143,7 +143,7 @@ def delete_items(items: list[str]) -> tuple[int, int]:
                 if sys.version_info >= (3, 12):
                     shutil.rmtree(path, onexc=_remove_readonly)
                 else:
-                    shutil.rmtree(path, onerror=_remove_readonly)
+                    shutil.rmtree(path, onerror=_remove_readonly)  # pylint: disable=deprecated-argument
             else:
                 os.remove(path)
             success += 1
