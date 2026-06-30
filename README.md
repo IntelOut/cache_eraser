@@ -1,8 +1,8 @@
 # Cache Eraser
 
-[![CI](https://github.com/GLADOSKABOSS/cache_eraser/actions/workflows/ci.yml/badge.svg)](https://github.com/GLADOSKABOSS/cache_eraser/actions/workflows/ci.yml)
-[![CD](https://github.com/GLADOSKABOSS/cache_eraser/actions/workflows/cd.yml/badge.svg)](https://github.com/GLADOSKABOSS/cache_eraser/actions/workflows/cd.yml)
-[![Pylint](https://img.shields.io/badge/pylint-10.00-brightgreen)](https://github.com/GLADOSKABOSS/cache_eraser/blob/main/.pylintrc)
+[![CI](https://github.com/IntelOut/cache_eraser/actions/workflows/ci.yml/badge.svg)](https://github.com/IntelOut/cache_eraser/actions/workflows/ci.yml)
+[![CD](https://github.com/IntelOut/cache_eraser/actions/workflows/cd.yml/badge.svg)](https://github.com/IntelOut/cache_eraser/actions/workflows/cd.yml)
+[![Pylint](https://img.shields.io/badge/pylint-10.00-brightgreen)](https://github.com/IntelOut/cache_eraser/blob/main/.pylintrc)
 
 GUI-утилита для рекурсивного поиска и удаления кеш-файлов и артефактов сборки в указанной директории.
 
@@ -17,7 +17,7 @@ GUI-утилита для рекурсивного поиска и удален�
 
 ## Использование
 
-1. Скачайте последний релиз со страницы [Releases](https://github.com/GLADOSKABOSS/cache_eraser/releases).
+1. Скачайте последний релиз со страницы [Releases](https://github.com/IntelOut/cache_eraser/releases).
 2. Запустите `CacheEraser.exe`.
 3. Выберите корневую директорию для сканирования (кнопка **Browse**).
 4. Отметьте нужные типы кеша (все включены по умолчанию).
