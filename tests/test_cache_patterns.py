@@ -1,6 +1,6 @@
 """Tests for cache_patterns module."""
 
-from cache_patterns import CACHE_PATTERNS, EXCLUDED_DIRS, ALL_PATTERN_IDS, CachePattern
+from cache_patterns import ALL_PATTERN_IDS, CACHE_PATTERNS, EXCLUDED_DIRS, CachePattern
 
 
 class TestCachePatterns:

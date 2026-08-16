@@ -3,6 +3,7 @@
 import os
 import tempfile
 
+from cache_patterns import CachePattern
 from scanner import (
     _build_dir_map,
     _build_file_map,
@@ -11,7 +12,6 @@ from scanner import (
     get_dir_size,
     scan_directory,
 )
-from cache_patterns import CachePattern
 
 
 class TestFormatSize:

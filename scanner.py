@@ -11,7 +11,6 @@ import stat
 
 from cache_patterns import CACHE_PATTERNS, EXCLUDED_DIRS, CachePattern
 
-
 ScanResult = list[tuple[str, str, int]]
 
 

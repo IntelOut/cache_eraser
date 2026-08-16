@@ -10,10 +10,10 @@ import os
 import sys
 import threading
 import tkinter as tk
-from tkinter import ttk, filedialog, messagebox
+from tkinter import filedialog, messagebox, ttk
 
 from cache_patterns import CACHE_PATTERNS
-from scanner import scan_directory, delete_items, format_size, ScanResult
+from scanner import ScanResult, delete_items, format_size, scan_directory
 
 
 def _resource_path(relative: str) -> str:
