@@ -27,6 +27,8 @@ GUI-утилита для рекурсивного поиска и удален�
 
 ## Сборка из исходников
 
+Требования: Python 3.12+, PyInstaller. Опционально [UPX](https://upx.github.io/) для сжатия бинарников — PyInstaller находит его через `PATH` (spec содержит `upx=True`).
+
 ```powershell
 pip install pyinstaller
 python -m PyInstaller CacheEraser.spec
@@ -38,16 +40,16 @@ python -m PyInstaller CacheEraser.spec
 build_exe.bat
 ```
 
-Готовый exe появится в корне проекта.
+Готовый exe появится в `dist/CacheEraser.exe`.
 
 ## CI / CD
 
-Единый workflow `ci.yml`:
+Workflow разделены на два файла:
 
-| Этап | Условие | Инструменты |
+| Workflow | Условие | Инструменты |
 |---|---|---|
-| **ci** | всегда | ruff, mypy, pylint, pytest |
-| **release** | push в `main` | PyInstaller + GitHub Release |
+| `ci.yml` | push / pull request | ruff, mypy, pylint, pytest |
+| `cd.yml` | вручную (workflow_dispatch) | PyInstaller + UPX, GitHub Release с exe |
 
 ## Структура проекта
 
@@ -59,7 +61,7 @@ build_exe.bat
 | `CacheEraser.spec` | Спецификация PyInstaller |
 | `build_exe.bat` | Скрипт сборки |
 | `icon.png` | Иконка приложения |
-| `CacheEraser.exe` | Готовый исполняемый файл |
+| `dist/CacheEraser.exe` | Готовый исполняемый файл (генерируется сборкой) |
 | `.pylintrc` | Конфигурация pylint (10.00/10) |
 | `tests/` | Модульные тесты |
 | `.github/workflows/` | CI/CD пайплайны |
