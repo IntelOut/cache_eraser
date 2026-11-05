@@ -2,10 +2,8 @@
 
 """PyInstaller spec for Cache Eraser.
 
-Builds a single-windowed executable bundled with the application icon.
+Builds a single-windowed executable bundled with icons and version metadata.
 """
-
-import os
 
 block_cipher = None
 
@@ -15,8 +13,9 @@ a = Analysis(
     binaries=[],
     datas=[
         ('icon.png', '.'),
+        ('icon.ico', '.'),
     ],
-    hiddenimports=[],
+    hiddenimports=['send2trash'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -46,5 +45,6 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='icon.png',
+    icon='icon.ico',
+    version='version_info.txt',
 )

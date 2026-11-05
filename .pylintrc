@@ -1,3 +1,13 @@
 [MAIN]
-max-attributes=12
+max-attributes=25
 min-public-methods=0
+jobs=0
+
+[FORMAT]
+max-line-length=100
+
+[MESSAGES CONTROL]
+disable=
+    duplicate-code,
+    missing-function-docstring,
+    too-few-public-methods
