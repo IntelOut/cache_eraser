@@ -1,1 +1,1 @@
-send2trash>=1.8,<2
+send2trash>=2.1.0,<3
